@@ -80,11 +80,12 @@ let ev = range(-50,50,length=200)
     plot!(sp=2, ev, calv, lab="", lw=1.5)
     calv = map(s->bg(s)*phsp(s), sv)
     plot!(sp=2, ev, calv, lab="", l=(2,0.9), fill_between=fill(0.0,length(calv)), α=0.2,
-        ann=(25,440,text("other PWs", 15)))
+        ann=(50,440,text("other PWs", 15, :right)))
     calv = map(s->abs2(prodamp(s+1e-6im))*phsp(s), sv)
-    plot!(sp=2, ev, calv, lab="", lw=1.5, ann=(25,50,text("studied PW", 15)))
+    plot!(sp=2, ev, calv, lab="", lw=1.5, ann=(50,50,text("studied PW (no resolution)", 15, :right)))
 end
 savefig(joinpath("plots", "Pc4312.pdf"))
+savefig(joinpath("plots", "Pc4312.png"))
 
 let
     ev = range(-3,3,length=200); sv = sofe_ΣcD0.(ev)
@@ -99,6 +100,8 @@ let
     ev_cut = ev[ev.>0]; sv_cut = sofe_ΣcD0.(ev_cut)
     calv = [amp11_IV(r+1im*i) for (i,r) in Iterators.product(isv_cut, sv_cut)]
     contour!(eofs_ΣcD0.(sv_cut), isv_cut, log.(abs2.(calv)), levels=10)
+    hline!([1e-4], l=(:red,:dot), lab="")
     plot!(xlab = "sqrt(Re(s))-eth (MeV)", ylab = "Im(s) (GeV)")
 end
-savefig(joinpath("plots", "pole.pdf"))
+savefig(joinpath("plots", "pole_position.pdf"))
+savefig(joinpath("plots", "pole_position.png"))
