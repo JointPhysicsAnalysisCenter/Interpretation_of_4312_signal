@@ -1,0 +1,103 @@
+\usepackage{xspace}
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{hyperref}% add hypertext capabilities
+\usepackage{braket}
+\usepackage{units}
+
+%\usepackage{cleveref}
+\usepackage{dsfont}
+%\usepackage{placeins}
+\usepackage{todonotes}
+%\usepackage{gensymb}
+\usepackage{multirow}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+
+
+% 	Commands
+\newcommand{\sw}{$S$-}
+\newcommand{\pw}{$P$-}
+\newcommand{\dw}{$D$-}
+% extra
+\newcommand{\babar}{BaBar}
+\newcommand{\belle}{Belle\xspace}
+\newcommand{\lhcb}{LHCb\xspace}
+\newcommand{\aka}{{\it aka}\xspace}
+\newcommand{\eg}{{\it e.g.}\xspace}
+\newcommand{\ie}{{\it i.e.}\xspace}
+\newcommand{\abs}[1]{\ensuremath{|#1|}}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\re}{Re}
+\newcommand{\SigmaD}{\ensuremath{\Sigma_c^+ \bar{D}^0}\xspace}
+\newcommand{\Pc}{\ensuremath{P_c(4312)^+}\xspace}
+\newcommand{\jpsi}{\ensuremath{J/\psi}\xspace}
+\newcommand{\jpsip}{\ensuremath{J/\psi\,p}\xspace}
+%\usepackage[mathlines]{lineno}% Enable numbering of text and display math
+%\linenumbers\relax % Commence numbering lines
+% added  by us
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{R}{>{$}r<{$}}
+\newcolumntype{C}{>{$}c<{$}}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{slashed}
+%\usepackage[normalem]{ulem}
+%\usepackage[format=plain,justification=RaggedRight,singlelinecheck=false]{caption}
+%\usepackage[format=plain,justification=centering,singlelinecheck=false]{subcaption}
+
+
+
+% conventions
+\newcommand{\nn}{\nonumber}
+\newcommand{\xxx}[1]{{\color{red}\bf #1}\xspace}
+% \renewcommand{\Re}{\ensuremath{\textrm{Re }}}
+% \renewcommand{\Im}{\ensuremath{\textrm{Im }}}
+% extra
+\newcommand{\cf}{{\it cf.}\xspace}
+\newcommand{\etal}{{\it et al.}\xspace}
+\newcommand{\unitm}{\ensuremath{\mathds{1}}\xspace}
+
+\newcommand{\mevnospace}{\ensuremath{{\mathrm{\,Me\kern -0.1em V}}}}
+\newcommand{\gevnospace}{\ensuremath{{\mathrm{\,Ge\kern -0.1em V}}}}
+\newcommand{\tevnospace}{\ensuremath{{\mathrm{\,Te\kern -0.1em V}}}}
+\newcommand{\mev}{\mevnospace\xspace}
+\newcommand{\gev}{\gevnospace\xspace}
+\newcommand{\tev}{\tevnospace\xspace}
+\newcommand{\mevp}{\ensuremath{(\!\mevnospace)}}
+\newcommand{\gevp}{\ensuremath{(\!\gevnospace)}}
+\newcommand{\tevp}{\ensuremath{(\!\tevnospace)}}
+
+\newcommand{\diffd}{\ensuremath{{\mathrm{d}}}}
+\newcommand{\mytitle}[1]{\vspace{.5cm}{\em #1.---}}
+
+
+%%%% delete these in the final version
+
+
+
+\usepackage{soul,color}
+\definecolor{chromeyellow}{rgb}{1.0, 0.65, 0.0}
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+\definecolor{asparagus}{rgb}{0.53, 0.66, 0.42}
+\newcommand{\adam}[1]{{\bf \color{red} Adam:  #1}\xspace}
+\newcommand{\adamcor}[2]{{\color{red} Adam:\st{#1}{\bf #2}}\xspace}
+\newcommand{\ale}[1]{{\bf \color{chromeyellow} Ale:  #1}\xspace}
+\newcommand{\alecor}[2]{{\color{chromeyellow} Ale:\st{#1}{\bf  #2}}\xspace}
+\newcommand{\vincent}[1]{{\bf \color{blue} Vincent:  #1}\xspace}
+\newcommand{\vincentcor}[2]{{\color{blue} Vincent:\st{#1}{\bf  #2}}\xspace}
+\newcommand{\misha}[1]{{\bf \color{applegreen} Misha:  #1}\xspace}
+\newcommand{\mishacor}[2]{{\color{applegreen} Misha:\st{#1}{\bf  #2}}\xspace}
+\newcommand{\cesar}[1]{{\bf \color{magenta} Cesar:  #1}\xspace}
+\newcommand{\cesarcor}[2]{{\color{magenta} Cesar:\st{#1}{\bf  #2}}\xspace}
+\newcommand{\miguel}[1]{{\bf \color{Cerulean} Miguel:  #1}\xspace}
+\newcommand{\miguelcor}[2]{{\color{Cerulean} Miguel:\st{#1}{\bf #2}}\xspace}
+\newcommand{\andrew}[1]{{\bf \color{purple} Andrew:  #1}\xspace}
+\newcommand{\andrewcor}[2]{{\color{purple} Andrew:\st{#1}{\bf #2}}\xspace}
+\newcommand{\arkaitz}[1]{{\bf \color{asparagus} Arkaitz:  #1}\xspace}
+\newcommand{\arkaitzcor}[2]{{\color{asparagus} Arkaitz:\st{#1}{\bf #2}}\xspace}
+\newcommand{\astrid}[1]{{\bf \color{Blue} Astrid:  #1}\xspace}
+\newcommand{\astridcor}[2]{{\color{Blue} Astrid:\st{#1}{\bf #2}}\xspace}
