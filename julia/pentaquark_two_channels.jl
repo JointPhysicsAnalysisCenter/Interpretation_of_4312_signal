@@ -14,7 +14,7 @@ const mΛb = 5.6196;
 const mΛbsq = mΛb^2;
 const mΣc = 2.4529;
 const mΣcsq = mΣc^2;
-const eth0 = mΣc + mD0;
+const eth = mΣc + mD0;
 const sth0 = eth0^2;
 
 # conversion between the energy from threshold (in MeV) to s (in GeV)
@@ -28,28 +28,34 @@ eofs_ΣcD0(s) = eofs(s; eth = eth0)
 poly(s, ps) = sum(s^(i - 1) * b for (i, b) in enumerate(ps))
 mmatrix_amp(s, M, iρ) = inv(M(s) - iρ(s))
 # Σc D0
-mmatrix_amp_Jψp_ΣcD0_sqrt(s, M) = mmatrix_amp(s, M, s -> [-sqrt((mJψ + mp)^2 - s) 0.0im
-      0.0im             -sqrt((mΣc + mD0)^2 - s)])
-mmatrix_amp_Jψp_ΣcD0_sqrt_III(s, M) = mmatrix_amp(s, M, s -> [sqrt((mJψ + mp)^2 - s) 0.0im
-    0.0im           -sqrt((mΣc + mD0)^2 - s)])
-mmatrix_amp_Jψp_ΣcD0_sqrt_IV(s, M) = mmatrix_amp(s, M, s -> [-sqrt((mJψ + mp)^2 - s) 0.0im
-     0.0im            sqrt((mΣc + mD0)^2 - s)])
+mmatrix_amp_Jψp_ΣcD0_sqrt(s, M) = mmatrix_amp(s, M, s ->
+    [                                                                                                                                                                                                                -sqrt((mJψ + mp)^2 - s) 0.0im
+        0.0im             -sqrt((mΣc + mD0)^2 - s)])
+mmatrix_amp_Jψp_ΣcD0_sqrt_III(s, M) = mmatrix_amp(s, M, s ->
+    [                                                                                                                                                                     sqrt((mJψ + mp)^2 - s) 0.0im
+        0.0im           -sqrt((mΣc + mD0)^2 - s)])
+mmatrix_amp_Jψp_ΣcD0_sqrt_IV(s, M) = mmatrix_amp(s, M, s ->
+    [                                                                                                                                                                 -sqrt((mJψ + mp)^2 - s) 0.0im
+        0.0im            sqrt((mΣc + mD0)^2 - s)])
 # scattering length approximation
-mmatrix_amp_Jψp_ΣcD0_sqrt_scattlen(s, c) = mmatrix_amp_Jψp_ΣcD0_sqrt(s, s -> [c[1] c[3]
-    c[3] c[2]])
+mmatrix_amp_Jψp_ΣcD0_sqrt_scattlen(s, c) = mmatrix_amp_Jψp_ΣcD0_sqrt(s, s ->
+    [                                                                                                                                                                                                                     c[1] c[3]
+        c[3] c[2]])
 # scattering amplitude
 amp0(s) = mmatrix_amp_Jψp_ΣcD0_sqrt_scattlen(s, (c11 = 2.6, c22 = 0.22, c12 = 0.85))
 amp11(s) = amp0(s)[1, 1]
 # second sheet amplitude
 amp11_III(s) =
     let c = (c11 = 2.6, c22 = 0.22, c12 = 0.85)
-        mmatrix_amp_Jψp_ΣcD0_sqrt_III(s, s -> [ c.c11 c.c12
-            c.c12 c.c22])[1, 1]
+        mmatrix_amp_Jψp_ΣcD0_sqrt_III(s, s ->
+            [                                                                                                                                                                                                                   c.c11 c.c12
+                c.c12 c.c22])[1, 1]
     end
 amp11_IV(s) =
     let c = (c11 = 2.6, c22 = 0.22, c12 = 0.85)
-        mmatrix_amp_Jψp_ΣcD0_sqrt_IV(s, s -> [c.c11 c.c12
-             c.c12 c.c22])[1, 1]
+        mmatrix_amp_Jψp_ΣcD0_sqrt_IV(s, s ->
+            [                                                                                                                                                                                                           c.c11 c.c12
+                c.c12 c.c22])[1, 1]
     end
 
 # production amplitude
@@ -82,15 +88,16 @@ let ev = range(-50, 50, length = 200)
     #
     plot(layout = grid(1, 2), size = (950, 350), xlab = "e-eth (MeV)")
     plot!(sp = 1, ev, [real.(calv) imag.(calv)], frame = :origin, title = "amplitude", lab = ["re" "im"])
-    #
+    # 
     calv = intens_conv.(ev)
     plot!(sp = 2, frame = :origin, title = "intensity", ylab = "rate (Events / 2 MeV)")
     plot!(sp = 2, ev, calv, lab = "", lw = 1.5)
     calv = map(s -> bg(s) * phsp(s), sv)
-    plot!(sp = 2, ev, calv, lab = "", l = (2, 0.9), fill_between = fill(0.0, length(calv)), α = 0.2,
-        ann = (50, 440, text("other PWs", 15, :right)))
+    plot!(sp = 2, ev, calv, lab = "", l = (2, 0.9), fill_between = fill(0.0, length(calv)), α = 0.2)
+    annotate!([(50, 440, text("other PWs", 15, :right))])
     calv = map(s -> abs2(prodamp(s + 1e-6im)) * phsp(s), sv)
-    plot!(sp = 2, ev, calv, lab = "", lw = 1.5, ann = (50, 50, text("studied PW (no resolution)", 15, :right)))
+    plot!(sp = 2, ev, calv, lab = "", lw = 1.5)
+    annotate!([(50, 50, text("studied PW (no resolution)", 15, :right))])
 end
 savefig(joinpath("plots", "Pc4312.pdf"))
 savefig(joinpath("plots", "Pc4312.png"))
@@ -115,3 +122,12 @@ let
 end
 savefig(joinpath("plots", "pole_position.pdf"))
 savefig(joinpath("plots", "pole_position.png"))
+
+
+# save the intensity to a file
+using DelimitedFiles
+let
+    ev = range(-50, 50, length = 200)
+    calv = intens_conv.(ev)
+    writedlm(joinpath(@__DIR__, "..", "data", "lookup_intensity_convoluted.txt"), hcat(ev .|> sofe .|> sqrt, calv))
+end
