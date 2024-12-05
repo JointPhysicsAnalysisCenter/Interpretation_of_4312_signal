@@ -29,17 +29,17 @@ poly(s, ps) = sum(s^(i - 1) * b for (i, b) in enumerate(ps))
 mmatrix_amp(s, M, iρ) = inv(M(s) - iρ(s))
 # Σc D0
 mmatrix_amp_Jψp_ΣcD0_sqrt(s, M) = mmatrix_amp(s, M, s ->
-    [                                                                                                                                                                                                                -sqrt((mJψ + mp)^2 - s) 0.0im
+    [                                                                                                                                                                                                             -sqrt((mJψ + mp)^2 - s) 0.0im
         0.0im             -sqrt((mΣc + mD0)^2 - s)])
 mmatrix_amp_Jψp_ΣcD0_sqrt_III(s, M) = mmatrix_amp(s, M, s ->
-    [                                                                                                                                                                     sqrt((mJψ + mp)^2 - s) 0.0im
+    [                                                                                                                                                                  sqrt((mJψ + mp)^2 - s) 0.0im
         0.0im           -sqrt((mΣc + mD0)^2 - s)])
 mmatrix_amp_Jψp_ΣcD0_sqrt_IV(s, M) = mmatrix_amp(s, M, s ->
-    [                                                                                                                                                                 -sqrt((mJψ + mp)^2 - s) 0.0im
+    [                                                                                                                                                              -sqrt((mJψ + mp)^2 - s) 0.0im
         0.0im            sqrt((mΣc + mD0)^2 - s)])
 # scattering length approximation
 mmatrix_amp_Jψp_ΣcD0_sqrt_scattlen(s, c) = mmatrix_amp_Jψp_ΣcD0_sqrt(s, s ->
-    [                                                                                                                                                                                                                     c[1] c[3]
+    [                                                                                                                                                                                                                  c[1] c[3]
         c[3] c[2]])
 # scattering amplitude
 amp0(s) = mmatrix_amp_Jψp_ΣcD0_sqrt_scattlen(s, (c11 = 2.6, c22 = 0.22, c12 = 0.85))
@@ -48,13 +48,13 @@ amp11(s) = amp0(s)[1, 1]
 amp11_III(s) =
     let c = (c11 = 2.6, c22 = 0.22, c12 = 0.85)
         mmatrix_amp_Jψp_ΣcD0_sqrt_III(s, s ->
-            [                                                                                                                                                                                                                   c.c11 c.c12
+            [                                                                                                                                                                                                                c.c11 c.c12
                 c.c12 c.c22])[1, 1]
     end
 amp11_IV(s) =
     let c = (c11 = 2.6, c22 = 0.22, c12 = 0.85)
         mmatrix_amp_Jψp_ΣcD0_sqrt_IV(s, s ->
-            [                                                                                                                                                                                                           c.c11 c.c12
+            [                                                                                                                                                                                                        c.c11 c.c12
                 c.c12 c.c22])[1, 1]
     end
 
@@ -67,6 +67,7 @@ bg(s) = poly(s, (b0 = 402.95, b1 = -15))
 λ(x, y, z) = x^2 + y^2 + z^2 - 2 * x * y - 2 * y * z - 2 * z * x
 phsp(s) = sqrt(λ(s, mΛbsq, mKsq) * λ(s, mpsq, mJψsq)) / (4 * sqrt(s))
 intensity(s) = (abs2(prodamp(s + 1e-6im)) + bg(s)) * phsp(s)
+signal_intensity(s) = (abs2(prodamp(s + 1e-6im))) * phsp(s)
 
 # convolution
 gaussian(Δe, σ = 2.7) = exp(-(Δe)^2 / (2 * σ^2)) / (sqrt(2π) * σ) # in MeV
@@ -78,6 +79,7 @@ conv_LHCb(f; σ = 2.7) = e -> quadgk(ep -> f(ep) * gaussian(e - ep, σe_LHCb(ep)
 
 # convolution
 intens_conv = conv(e -> intensity(sofe_ΣcD0(e)))
+signal_intens_conv = conv(e -> signal_intensity(sofe_ΣcD0(e)))
 # check that it works
 @show intens_conv(eth0)
 
@@ -95,12 +97,14 @@ let ev = range(-50, 50, length = 200)
     calv = map(s -> bg(s) * phsp(s), sv)
     plot!(sp = 2, ev, calv, lab = "", l = (2, 0.9), fill_between = fill(0.0, length(calv)), α = 0.2)
     annotate!([(50, 440, text("other PWs", 15, :right))])
-    calv = map(s -> abs2(prodamp(s + 1e-6im)) * phsp(s), sv)
+    calv = map(signal_intens_conv, ev)
     plot!(sp = 2, ev, calv, lab = "", lw = 1.5)
     annotate!([(50, 50, text("studied PW (no resolution)", 15, :right))])
 end
 savefig(joinpath("plots", "Pc4312.pdf"))
 savefig(joinpath("plots", "Pc4312.png"))
+
+conv(e -> intensity(sofe_ΣcD0(e)))
 
 let
     ev = range(-3, 3, length = 200)
@@ -128,6 +132,6 @@ savefig(joinpath("plots", "pole_position.png"))
 using DelimitedFiles
 let
     ev = range(-50, 50, length = 200)
-    calv = intens_conv.(ev)
+    calv = map(signal_intens_conv, ev)
     writedlm(joinpath(@__DIR__, "..", "data", "lookup_intensity_convoluted.txt"), hcat(ev .|> sofe .|> sqrt, calv))
 end
